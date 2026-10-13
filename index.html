@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b16">
+  <title>PixelMind AI — Imagine Anything</title>
+  <meta name="description" content="Turn your imagination into images with PixelMind AI.">
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: #090b16;
+      color: #f7f7ff;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 10% 0%, #24205a 0, transparent 40%),
+        radial-gradient(ellipse at 90% 25%, #172b4d 0, transparent 35%),
+        #090b16;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 7%;
+      border-bottom: 1px solid #ffffff12;
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .brand span {
+      color: #a78bfa;
+    }
+
+    .status {
+      color: #c4b5fd;
+      background: #8b5cf61c;
+      border: 1px solid #a78bfa40;
+      border-radius: 30px;
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    main {
+      width: min(1100px, 90%);
+      margin: 0 auto;
+      padding: 65px 0 55px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .eyebrow {
+      color: #c4b5fd;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 72px);
+      line-height: 1.05;
+      letter-spacing: -3px;
+      margin: 20px 0;
+    }
+
+    h1 span {
+      background: linear-gradient(100deg, #c4b5fd, #60a5fa, #f0abfc);
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .subtitle {
+      color: #a4a8bd;
+      max-width: 570px;
+      line-height: 1.8;
+      margin: 0 auto;
+      font-size: 15px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: #111421d9;
+      border: 1px solid #ffffff16;
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 20px 70px #00000018;
+      min-width: 0;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .hint {
+      color: #8f94aa;
+      font-size: 12px;
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    label {
+      display: block;
+      color: #d7d9e7;
+      font-size: 12px;
+      font-weight: 650;
+      margin: 18px 0 9px;
+    }
+
+    textarea, select {
+      width: 100%;
+      border: 1px solid #ffffff1b;
+      background: #090c17;
+      color: #f7f7ff;
+      border-radius: 12px;
+      padding: 13px;
+      font: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 125px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    textarea:focus, select:focus {
+      border-color: #a78bfa;
+    }
+
+    .examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .example {
+      border: 1px solid #ffffff18;
+      background: #ffffff08;
+      color: #c6c8d8;
+      border-radius: 30px;
+      padding: 7px 10px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .example:hover {
+      border-color: #a78bfa;
+      color: white;
+    }
+
+    .generate {
+      width: 100%;
+      margin-top: 22px;
+      padding: 15px;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(100deg, #8b5cf6, #6366f1);
+      color: white;
+      font-size: 14px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .2s, opacity .2s;
+    }
+
+    .generate:hover { transform: translateY(-2px); }
+    .generate:disabled { opacity: .6; cursor: wait; }
+
+    .preview {
+      min-height: 430px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .preview-head h2 { margin: 0; }
+
+    .preview-box {
+      position: relative;
+      flex: 1;
+      min-height: 340px;
+      border: 1px dashed #ffffff27;
+      border-radius: 16px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 45%, #25234a, transparent 65%),
+        #0b0e1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 25px;
+      color: #9297ad;
+    }
+
+    .empty .symbol {
+      font-size: 46px;
+      margin-bottom: 15px;
+    }
+
+    .empty strong {
+      display: block;
+      color: #e1e3f2;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    #resultImage {
+      display: none;
+      width: 100%;
+      height: 100%;
+      min-height: 340px;
+      object-fit: contain;
+    }
+
+    .preview-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    #message {
+      color: #9ca3bb;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .download {
+      display: none;
+      color: white;
+      text-decoration: none;
+      background: #ffffff12;
+      border: 1px solid #ffffff20;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .note {
+      margin-top: 22px;
+      color: #81869d;
+      font-size: 11px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    footer {
+      border-top: 1px solid #ffffff12;
+      text-align: center;
+      padding: 25px;
+      color: #777d94;
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      header { padding: 18px 5%; }
+      main { padding-top: 45px; }
+      .workspace { grid-template-columns: 1fr; }
+      .preview { min-height: 420px; }
+      h1 { letter-spacing: -2px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">✦ PixelMind<span> AI</span></div>
+    <div class="status">✦ Creative studio</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">Your imagination, visualized</div>
+      <h1>Imagine it.<br><span>Create it.</span></h1>
+      <p class="subtitle">
+        Describe the image in your mind. We're building a new way
+        to turn your words into art, right in your browser.
+      </p>
+    </section>
+
+    <section class="workspace">
+      <div class="panel">
+        <h2>Create an image</h2>
+        <p class="hint">Describe what you want to see. Be as imaginative as you like!</p>
+
+        <label for="prompt">YOUR PROMPT</label>
+        <textarea id="prompt" maxlength="1000"
+          placeholder="A tiny astronaut exploring a glowing crystal garden on an alien planet..."></textarea>
+
+        <div class="examples">
+          <button class="example" data-prompt="A magical library floating among clouds at sunset, detailed fantasy digital art">Fantasy</button>
+          <button class="example" data-prompt="A photorealistic water droplet on a green leaf, soft morning light, macro photography">Nature</button>
+          <button class="example" data-prompt="A futuristic city at night with glowing blue architecture and flying cars, cinematic concept art">Sci-fi</button>
+        </div>
+
+        <label for="style">ART STYLE</label>
+        <select id="style">
+          <option value="auto">Choose from prompt</option>
+          <option value="photorealistic">Photorealistic</option>
+          <option value="digital art">Digital art</option>
+          <option value="watercolor painting">Watercolour</option>
+          <option value="anime illustration">Anime</option>
+          <option value="3D render">3D render</option>
+        </select>
+
+        <button class="generate" id="generate">✦ Generate image</button>
+      </div>
+
+      <div class="panel preview">
+        <div class="preview-head">
+          <h2>Your creation</h2>
+          <span class="status">Preview</span>
+        </div>
+
+        <div class="preview-box">
+          <div class="empty" id="empty">
+            <div class="symbol">✧</div>
+            <strong>Your masterpiece starts here</strong>
+            <span>Your generated image will appear in this space.</span>
+          </div>
+          <img id="resultImage" alt="AI-generated artwork">
+        </div>
+
+        <div class="preview-bottom">
+          <span id="message">AI model connection not set up yet.</span>
+          <a class="download" id="download" download="pixelmind-creation.png">↓ Download image</a>
+        </div>
+      </div>
+    </section>
+
+    <p class="note">
+      PixelMind AI is under development. No image is generated until a real AI model is connected.
+    </p>
+  </main>
+
+  <footer>PixelMind AI · Made for curious minds ✦</footer>
+
+  <script>
+    const promptBox = document.getElementById("prompt");
+    const styleBox = document.getElementById("style");
+    const generateButton = document.getElementById("generate");
+    const message = document.getElementById("message");
+
+    document.querySelectorAll(".example").forEach(button => {
+      button.addEventListener("click", () => {
+        promptBox.value = button.dataset.prompt;
+        promptBox.focus();
+      });
+    });
+
+    generateButton.addEventListener("click", () => {
+      if (!promptBox.value.trim()) {
+        message.textContent = "Please describe the image you want first.";
+        promptBox.focus();
+        return;
+      }
+
+      message.textContent =
+        "Your prompt is ready. Next, we'll connect a real browser-based AI model.";
+      alert(
+        "PixelMind AI's website is ready for its AI engine! " +
+        "This version does not generate images yet. Our next step is connecting a real model."
+      );
+    });
+  </script>
+</body>
+</html>
